@@ -52,10 +52,6 @@ export const SubmitTip = () => {
 
   return (
     <div>
-      <div className="w-full bg-primary text-white py-4 text-center text-xl">
-        समग्र भारत में ड्रग्स के विरुद्ध , आओ मिलकर लड़ें निर्णायक युद्ध
-      </div>
-
       <p className="text-center mt-10 text-red-600 font-semibold">
         The identity & all the information provided by citizens will remain
         confidential.

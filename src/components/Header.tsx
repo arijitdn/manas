@@ -1,9 +1,10 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Menu, X, Phone, Mail } from "lucide-react";
 import { useState } from "react";
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const location = useLocation();
 
   return (
     <header className="bg-white shadow-md">
@@ -33,7 +34,6 @@ export function Header() {
           </div>
         </div>
       </div>
-
       {/* Main header */}
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between py-4">
@@ -81,10 +81,10 @@ export function Header() {
               Contact
             </Link>
             <Link
-              to="/submit-tip"
+              to="/login"
               className="bg-primary text-primary-foreground px-4 py-2 rounded-md hover:bg-primary/90 transition-colors"
             >
-              Report Now
+              Login
             </Link>
           </nav>
 
@@ -141,16 +141,39 @@ export function Header() {
                 Contact
               </Link>
               <Link
-                to="/submit-tip"
+                to="/login"
                 className="bg-primary text-primary-foreground px-4 py-2 rounded-md hover:bg-primary/90 transition-colors text-center"
                 onClick={() => setIsMenuOpen(false)}
               >
-                Report Now
+                Login
               </Link>
             </div>
           </nav>
         )}
       </div>
+      {
+        /* Highlight active link */
+        location.pathname === "/" ? (
+          <div className="w-full bg-blue-800 text-white py-4 text-center text-lg">
+            <span className="font-semibold">Upcoming Events:</span>{" "}
+            <span className="text-base ml-2">
+              National Drug Awareness Campaign, August 2025
+            </span>{" "}
+            -{" "}
+            <a
+              href="/events/1"
+              className="underline text-base underline-offset-2 hover:font-semibold"
+            >
+              Learn More
+            </a>
+          </div>
+        ) : (
+          <div className="w-full bg-primary text-white py-4 text-center text-xl">
+            আসুন আমরা একসাথে ভারত জুড়ে মাদকের বিরুদ্ধে একটি চূড়ান্ত যুদ্ধ
+            লড়ি।
+          </div>
+        )
+      }
     </header>
   );
 }
