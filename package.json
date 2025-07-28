@@ -1,12 +1,13 @@
 {
   "name": "drugs-website",
   "private": true,
+  "version": "0.0.1",
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
-    "format.fix": "prettier --write .",
-    "typecheck": "tsc"
+    "build": "tsc -b && vite build",
+    "lint": "eslint .",
+    "preview": "vite preview"
   },
   "dependencies": {
     "dotenv": "^17.2.0",
