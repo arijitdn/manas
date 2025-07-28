@@ -17,17 +17,6 @@ interface DisclaimerData {
 
 const disclaimerData: DisclaimerData[] = [
   {
-    title: "Disclaimer",
-    contents: [
-      {
-        text: "MANAS – National Narcotics Helpline portal is a project of the Narcotics Control Bureau, Ministry of Home Affairs, Government of India to facilitate victims / citizens to report drug-related issues / complaints by 24*7. This portal caters to complaints pertaining to drug-related matters only. Drug-related matters including drug trafficking, illegal sale / purchase / storage / manufacturing and illicit cultivation of narcotic drugs or psychotropic substances. The information provided will be reviewed promptly by NCB officers. The identity of the informer / citizen will be kept secret.",
-      },
-      {
-        text: "NOTE: If you witness an event that may lead to an immediate threat to human health or safety, you should report it to your local police, dial 112 or share it with the concerned law enforcement authority.",
-      },
-    ],
-  },
-  {
     title: "Terms & Conditions",
     contents: [
       {
@@ -44,8 +33,6 @@ const disclaimerData: DisclaimerData[] = [
 ];
 
 export const SubmitTip = () => {
-  const [currentId, setCurrentId] = useState(0);
-  const [hasAcceptedDisclaimer, setHasAcceptedDisclaimer] = useState(false);
   const [hasAcceptedTerms, setHasAcceptedTerms] = useState(false);
 
   const navigate = useNavigate();
@@ -63,12 +50,10 @@ export const SubmitTip = () => {
         </p>
         <Card>
           <CardHeader className="bg-gray-100">
-            <h2 className="text-lg font-semibold">
-              {disclaimerData[currentId].title}
-            </h2>
+            <h2 className="text-lg font-semibold">{disclaimerData[0].title}</h2>
           </CardHeader>
           <CardContent className="py-4 space-y-4">
-            {disclaimerData[currentId].contents.map((content, index) => (
+            {disclaimerData[0].contents.map((content, index) => (
               <p key={index} className="text-sm text-gray-700">
                 {content.text}
               </p>
@@ -76,46 +61,27 @@ export const SubmitTip = () => {
           </CardContent>
           <CardFooter className="flex flex-col items-center">
             <div className="flex gap-2 items-center justify-center">
-              {currentId === 0 ? (
-                <Checkbox
-                  id="acceptDisclaimer"
-                  checked={hasAcceptedDisclaimer}
-                  onClick={() =>
-                    setHasAcceptedDisclaimer(!hasAcceptedDisclaimer)
-                  }
-                />
-              ) : (
-                <Checkbox
-                  id="acceptTerms"
-                  checked={hasAcceptedTerms}
-                  onClick={() => setHasAcceptedTerms(!hasAcceptedTerms)}
-                />
-              )}
-              <Label
-                htmlFor={currentId === 0 ? "acceptDisclaimer" : "acceptTerms"}
-              >
+              <Checkbox
+                id="acceptTerms"
+                checked={hasAcceptedTerms}
+                onClick={() => setHasAcceptedTerms(!hasAcceptedTerms)}
+              />
+              <Label htmlFor="acceptTerms">
                 <span className="text-sm">
-                  I have read and understood the{" "}
-                  {currentId === 0 ? "Disclaimer" : "Terms & Conditions"}.
+                  I have read and understood the terms and conditions mentioned
+                  above.
                 </span>
               </Label>
             </div>
             <div>
               <Button
                 className="mt-4"
-                disabled={
-                  (currentId === 0 && !hasAcceptedDisclaimer) ||
-                  (currentId === 1 && !hasAcceptedTerms)
-                }
+                disabled={!hasAcceptedTerms}
                 onClick={() => {
-                  if (currentId < disclaimerData.length - 1) {
-                    setCurrentId(currentId + 1);
-                  } else {
-                    navigate("/select-category");
-                  }
+                  navigate("/select-category");
                 }}
               >
-                {currentId < disclaimerData.length - 1 ? "Next" : "Submit"}
+                Proceed to Submit Tip
               </Button>
             </div>
           </CardFooter>

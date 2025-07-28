@@ -1,5 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface Category {
   title: string;
@@ -9,34 +10,32 @@ interface Category {
 
 const categories: Category[] = [
   {
-    title: "Drug Trafficking / Peddling",
+    title: "Drugs Related Tips",
     imageUrl: "/safety1.svg",
     description:
-      "Complaints / Inputs directly related to drug trafficking / illegal sale / purchase / storage / manufacturing / smuggling / smugglers",
+      "Report drug trafficking, peddling, illegal sale, purchase, storage, manufacturing, smuggling, or illicit cultivation of substances.",
   },
   {
-    title: "Counselling / Rehabilitation",
+    title: "Child Marriage Related Tips",
     imageUrl: "/safety2.svg",
     description:
-      "For any information regarding Counselling & Rehabilitation centers.",
+      "Report cases of child marriage, planned ceremonies, or any activities that violate child protection laws.",
   },
   {
-    title: "Illicit Cultivation",
+    title: "Miscellaneous",
     imageUrl: "/safety3.svg",
     description:
-      "Complaints / Inputs directly related to the illicit cultivation of Cannabis / Poppy Plant / Coca Plant only",
-  },
-  {
-    title: "Miscellaneous / Others",
-    imageUrl: "/safety4.svg",
-    description:
-      "Complaints / Inputs related to smuggling of various articles which are not covered under the NDPS Act i.e Alcohol, tobacco, Bhang, fluid / thinner and others.",
+      "Other social issues, community concerns, or matters that require attention from authorities but don't fall into the above categories.",
   },
 ];
 
 export const SelectCategory = () => {
-  const [drugTraffickingButton, setDrugTraffickingButton] = useState(false);
-  const [counsellingButton, setCounsellingButton] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
+  const navigate = useNavigate();
+
+  const handleCategorySelect = (index: number) => {
+    setSelectedCategory(index);
+  };
 
   return (
     <div>
@@ -50,19 +49,57 @@ export const SelectCategory = () => {
         <p className="text-sm text-gray-700 mb-6">
           Please select the category that best describes your tip.
         </p>
-        <div className="grid grid-cols-2 place-items-center gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
           {categories.map((category, index) => (
-            <button key={index}>
-              <Card className="w-[400px] h-[320px] cursor-pointer hover:shadow-lg transition-shadow duration-200 flex flex-col justify-between">
-                <CardContent className="relative flex flex-col items-center h-full">
-                  <div className="border-2 border-black/50 w-4 h-4 rounded-full absolute top-4 right-4 bg-transparent" />
+            <button
+              key={index}
+              onClick={() => handleCategorySelect(index)}
+              className="w-full"
+            >
+              <Card
+                className={`h-[320px] cursor-pointer transition-all duration-300 flex flex-col justify-between ${
+                  selectedCategory === index
+                    ? "border-2 border-primary bg-primary/5 shadow-lg transform scale-105"
+                    : "border border-gray-200 hover:shadow-lg hover:border-primary/50"
+                }`}
+              >
+                <CardContent className="relative flex flex-col items-center h-full p-6">
+                  {/* Selection indicator */}
+                  <div
+                    className={`w-5 h-5 rounded-full absolute top-4 right-4 border-2 transition-all duration-200 ${
+                      selectedCategory === index
+                        ? "border-primary bg-primary"
+                        : "border-gray-400 bg-transparent"
+                    }`}
+                  >
+                    {selectedCategory === index && (
+                      <div className="w-full h-full rounded-full bg-white scale-50 transform"></div>
+                    )}
+                  </div>
+
                   <img
                     src={category.imageUrl}
                     alt={category.title}
-                    className="w-28 mt-8"
+                    className="w-24 h-24 mt-6 object-contain"
                   />
-                  <h1 className="font-semibold mt-4">{category.title}</h1>
-                  <p className="text-sm text-gray-600 mt-4 text-center">
+
+                  <h1
+                    className={`font-semibold mt-6 text-lg text-center ${
+                      selectedCategory === index
+                        ? "text-primary"
+                        : "text-gray-800"
+                    }`}
+                  >
+                    {category.title}
+                  </h1>
+
+                  <p
+                    className={`text-sm mt-4 text-center leading-relaxed ${
+                      selectedCategory === index
+                        ? "text-gray-700"
+                        : "text-gray-600"
+                    }`}
+                  >
                     {category.description}
                   </p>
                 </CardContent>
@@ -70,6 +107,20 @@ export const SelectCategory = () => {
             </button>
           ))}
         </div>
+
+        {/* Continue Button */}
+        {selectedCategory !== null && (
+          <div className="mt-8 text-center">
+            <button
+              className="bg-primary text-white px-8 py-3 rounded-lg font-semibold hover:bg-primary/90 transition-colors duration-200"
+              onClick={() => {
+                navigate(`/create-ticket/${selectedCategory + 1}`);
+              }}
+            >
+              Continue with {categories[selectedCategory].title}
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
